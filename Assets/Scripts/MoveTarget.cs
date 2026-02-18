@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-public class MoveToMouse : MonoBehaviour
+public class MoveTarget : MonoBehaviour
 {
     [SerializeField] private float speed = 20;
     private Vector2 dir;
