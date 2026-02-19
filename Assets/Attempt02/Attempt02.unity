@@ -446,6 +446,8 @@ MonoBehaviour:
   target: {fileID: 175579007}
   spawnAmount: 30
   pawns: []
+  centerCluster: {x: 0, y: 0, z: 0}
+  debugCenterRadius: 1
 --- !u!1 &1820757957
 GameObject:
   m_ObjectHideFlags: 0

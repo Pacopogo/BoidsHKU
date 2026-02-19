@@ -2,63 +2,92 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// This script will control the cluster of Boids/Pawns in the scene to give them a grouped direction
-/// and make them stay close
-/// Bassiclly this is one big hive mind
-/// </summary>
-public class BoidCluster : MonoBehaviour
+namespace Attempt02
 {
-    [SerializeField] private GameObject prefab;
-    [SerializeField] private GameObject target;
-
-    [SerializeField] private int spawnAmount = 5;
-    public List<Pawn> pawns = new List<Pawn>();
-
-    [ContextMenu("Spawn Pawns")]
-    public void CreatePawns()
+    /// <summary>
+    /// This script will control the cluster of Boids/Pawns in the scene to give them a grouped direction
+    /// and make them stay close
+    /// Bassiclly this is one big hive mind
+    /// </summary>
+    public class BoidCluster : MonoBehaviour
     {
-        GameObject obj;
-        for (int i = 0; i < spawnAmount; i++)
+        [SerializeField] private GameObject prefab;
+        [SerializeField] private GameObject target;
+
+        [SerializeField] private int spawnAmount = 5;
+        public List<Pawn> pawns = new List<Pawn>();
+
+        [SerializeField] private Vector3 centerCluster = Vector3.zero;
+        [SerializeField] private float debugCenterRadius = 5;
+
+        [ContextMenu("Spawn Pawns")]
+        public void CreatePawns()
         {
-            obj = Instantiate(prefab);
-            pawns.Add(obj.GetComponent<Pawn>());
+            GameObject obj;
+            for (int i = 0; i < spawnAmount; i++)
+            {
+                obj = Instantiate(prefab);
+                pawns.Add(obj.GetComponent<Pawn>());
 
-            obj.transform.SetParent(transform, false);
+                obj.transform.SetParent(transform, false);
 
-            float rndX = Random.Range(-15, 15);
-            float rndY = Random.Range(-15, 15);
-            obj.transform.localPosition = new Vector3(rndX, rndY, 0);
+                float rndX = Random.Range(-15, 15);
+                float rndY = Random.Range(-15, 15);
+                obj.transform.localPosition = new Vector3(rndX, rndY, 0);
+            }
         }
-    }
 
-    [ContextMenu("Clear Pawns")]
-    public void DeleteAllPawns()
-    {
-        foreach (Pawn pawn in pawns)
+        [ContextMenu("Clear Pawns")]
+        public void DeleteAllPawns()
         {
-            Destroy(pawn.gameObject);
+            foreach (Pawn pawn in pawns)
+            {
+                Destroy(pawn.gameObject);
+            }
+            pawns.Clear();
         }
-        pawns.Clear();
-    }
 
-    private void FixedUpdate()
-    {
-        UpdatePawns();
-    }
-
-    private void UpdatePawns()
-    {
-        Vector3 intededDir = Vector3.zero;
-        GameObject obj = target;
-        foreach(Pawn pawn in pawns)
+        private void FixedUpdate()
         {
-            pawn.MoveToDir(obj.transform.position);
+            UpdatePawns();
+        }
 
-            intededDir = obj.transform.position;
+        private void UpdatePawns()
+        {
+            Vector3 intededDir = Vector3.zero;
+            GameObject obj = target;
+            centerCluster = Vector3.zero;
 
-            Debug.DrawLine(pawn.gameObject.transform.position, intededDir, Color.green);
-            obj = pawn.gameObject;
+            foreach (Pawn pawn in pawns)
+            {
+                pawn.MoveToDir(obj.transform.position);
+
+                intededDir = obj.transform.position;
+
+                Debug.DrawLine(pawn.gameObject.transform.position, intededDir, Color.green);
+                obj = pawn.gameObject;
+
+                Recenter(pawn.transform.position);
+            }
+
+            centerCluster /= pawns.Count;
+        }
+
+        private void Recenter(Vector3 pawnPos)
+        {
+            centerCluster += pawnPos;
+        }
+
+        private void MoveCenterTowardsTarget()
+        {
+            Vector3 Dir = target.transform.position - centerCluster;
+            centerCluster += Dir * 6 * Time.fixedDeltaTime;
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(centerCluster, debugCenterRadius);
         }
     }
 }
