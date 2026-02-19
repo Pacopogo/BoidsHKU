@@ -8,7 +8,7 @@ public class BoidManager : MonoBehaviour
     [SerializeField] private int spawnAmount = 20;
 
     [SerializeField] private List<GameObject> boidList;
-    
+
     [ContextMenu("Spawn Boids")]
     public void SpawnBoids()
     {
@@ -40,5 +40,20 @@ public class BoidManager : MonoBehaviour
             Destroy(obj);
         }
         boidList.Clear();
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (boidList.Count > 0)
+        {
+            Vector3 center = Vector3.zero;
+            foreach (GameObject obj in boidList)
+            {
+                center += obj.transform.position;
+            }
+            center /= boidList.Count;
+            Gizmos.DrawWireCube(center, Vector3.one);
+        }
+
     }
 }

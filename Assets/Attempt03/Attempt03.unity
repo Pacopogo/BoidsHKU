@@ -581,7 +581,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoidManager
   target: {fileID: 745893645}
   prefab: {fileID: 3994810472238220447, guid: a250e5f9fbd98eb4c9d998b3da796e76, type: 3}
-  spawnAmount: 20
+  spawnAmount: 40
   boidList: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

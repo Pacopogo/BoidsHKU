@@ -14,7 +14,7 @@ using UnityEngine;
 public class Boid : MonoBehaviour
 {
 
-    [SerializeField] private Vector3 boidVelocityDir;
+    public Vector3 boidVelocityDir;
 
     [Header("Settings")]
     [SerializeField] private float boidSpeed = 10;
@@ -37,7 +37,15 @@ public class Boid : MonoBehaviour
     [Header("Other boids")]
     public Transform TargetTrans;
     public List<GameObject> boidList = new List<GameObject>();
+    private List<Boid> boids = new List<Boid>();
 
+    private void Start()
+    {
+        foreach (var item in boidList)
+        {
+            boids.Add(item.GetComponent<Boid>());
+        }
+    }
     private void FixedUpdate()
     {
         boidVelocityDir = Vector3.zero;
@@ -51,7 +59,7 @@ public class Boid : MonoBehaviour
     {
 
         boidVelocityDir += Seperation().normalized * avoidStrength;
-        //boidVelocityDir += Alignment().normalized;
+        boidVelocityDir += Alignment().normalized * alignmentStrength;
 
         if((Cohesion() - transform.position).magnitude > centerDistance)
             boidVelocityDir += (Cohesion() - transform.position).normalized;
@@ -80,6 +88,7 @@ public class Boid : MonoBehaviour
             }
         }
         v /= index;
+
         return v;
     }
     /// <summary>
@@ -90,15 +99,19 @@ public class Boid : MonoBehaviour
     {
         Vector3 v = Vector3.zero;
         Vector3 dist;
+        int index = 0;
 
-        foreach (GameObject obj in boidList)
+        foreach (Boid obj in boids)
         {
             dist = obj.transform.position - transform.position;
             if (dist.magnitude > alignmentDistance)
             {
-                v += (obj.transform.position - transform.position).normalized * alignmentStrength;
+                v += obj.boidVelocityDir;
+                ++index;
             }
         }
+        
+        v /= index;
 
         return v;
     }
@@ -115,13 +128,8 @@ public class Boid : MonoBehaviour
             center += obj.transform.position;
         }
 
-        center /= boidList.Count; 
+        center /= boidList.Count;
 
         return center;
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawCube(Cohesion(), new Vector2(1,1));
     }
 }
