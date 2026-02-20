@@ -105,7 +105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Boid
   boidVelocityDir: {x: 0, y: 0, z: 0}
-  boidSpeed: 10
+  boidSpeed: 12
   centerDistance: 4
   targetDistance: 6
   targetStrength: 3

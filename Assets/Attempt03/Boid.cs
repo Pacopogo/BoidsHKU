@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -66,7 +65,6 @@ public class Boid : MonoBehaviour
 
         if((TargetTrans.position - transform.position).magnitude > targetDistance)
             boidVelocityDir += (TargetTrans.position - transform.position).normalized * targetStrength;
-
     }
 
     /// <summary>
@@ -88,6 +86,8 @@ public class Boid : MonoBehaviour
             }
         }
         v /= index;
+
+
 
         return v;
     }
@@ -112,6 +112,7 @@ public class Boid : MonoBehaviour
         }
         
         v /= index;
+        Debug.DrawRay(transform.position, v, Color.green);
 
         return v;
     }
@@ -129,6 +130,7 @@ public class Boid : MonoBehaviour
         }
 
         center /= boidList.Count;
+
 
         return center;
     }
