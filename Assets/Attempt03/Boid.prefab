@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8299892252535765913}
   - component: {fileID: 6844015557544891743}
   - component: {fileID: 8804757529673765246}
+  - component: {fileID: 8846101214450247807}
   m_Layer: 0
   m_Name: Boid
   m_TagString: Untagged
@@ -115,3 +116,15 @@ MonoBehaviour:
   alignmentStrength: 5
   TargetTrans: {fileID: 0}
   boidList: []
+--- !u!114 &8846101214450247807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3994810472238220447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ed9aacca64a434f9bc229ce6d655a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoarderCheck
